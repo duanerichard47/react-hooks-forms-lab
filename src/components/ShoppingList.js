@@ -6,7 +6,7 @@ import Item from "./Item";
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [onSearchChange , setOnSearchChange ] = useState("");
-  const [onSubForm , setOnSubForm ] = useState("Produce");
+  const [itemsList, setItemsList] = useState(items)
 
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
@@ -16,43 +16,33 @@ function ShoppingList({ items }) {
     setOnSearchChange(event.target.value);
   }
 
-  // const itemsToDisplay = items.filter((item) => {
-  //   if (selectedCategory === "All") return true;
-
-  //   return item.category === selectedCategory;
-  // });
-
-  // const itemsToDisplaySrch = items.filter((item) => {
-  //  return(item.name.toLowerCase().includes(onSearchChange.toLowerCase()))  cd
-  // });
-  const itemsToDisplay = items
+  const itemsToDisplay = itemsList
     .filter((item) => selectedCategory === "All" || item.category === selectedCategory)
     .filter((item) =>item.name.toLowerCase().includes(onSearchChange.toLowerCase()))
 
 
-  // const itemsToDisplaySrchMapped =itemsToDisplaySrch.map((itemSrch) => {
-    
-  //   return(
-    
-  //   <Item key={itemSrch.id} name={itemSrch.name} category={itemSrch.category} />
-  // )})
 
-  function onItemFormSubmit (event) {
-    event.preventdefault()
-    setOnSubForm(event.target.value)
+  function onItemFormSubmit (newObject) {
 
+    setItemsList([...itemsList,newObject])
+    }
 
-  }
+    // const newItemArr = { ...items, onSubForm}
+
+    // const newItemArrMap = itemsToDisplay.map(item =>
+    //   <item key={item.id} name={item.name} category={item.category} />)
+
+ 
   return (
 
     <div className="ShoppingList">
       <ItemForm onItemFormSubmit ={onItemFormSubmit}/>
-      <Filter onCategoryChange={handleCategoryChange}  onSearchChange={onSearchChange} handleOnSearchChange={handleOnSearchChange}/>
+      <Filter onCategoryChange={handleCategoryChange}  search={onSearchChange} onSearchChange={handleOnSearchChange}/>
       <ul className="Items">
         {itemsToDisplay.map((item) => (
           <Item key={item.id} name={item.name} category={item.category} />
         ))}
-        {/* {itemsToDisplaySrchMapped } */}
+         {/* {newItemArrMap} */}
       </ul>
     </div>
   );
